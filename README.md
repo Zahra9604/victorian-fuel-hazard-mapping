@@ -1,5 +1,3 @@
-# victorian-fuel-hazard-mapping
-An independent GIS and remote-sensing portfolio project exploring relative fuel-hazard mapping and QField-based field verification in Victoria.
 # 🌲 Victorian Fuel Hazard Mapping & Field Verification
 
 **Independent GIS & Remote Sensing Portfolio Project — 2026**
