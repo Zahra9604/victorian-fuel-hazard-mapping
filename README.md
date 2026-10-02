@@ -35,7 +35,7 @@ Using **Python and QGIS**, these datasets were combined to produce a relative fu
 
 ### Example output
 
-![Relative Fuel Hazard Map]([images/stage1-hazard-map.png](https://github.com/Zahra9604/victorian-fuel-hazard-mapping/blob/main/Relative%20Fuel%20Hazard%20Map.png))
+![Relative Fuel Hazard Map]([images/stage1-hazard-map.png](https://github.com/Zahra9604/victorian-fuel-hazard-mapping/blob/main/Relative%20Fuel%20Hazard%20Map.png])
 
 The relative hazard classification was divided into:
 
