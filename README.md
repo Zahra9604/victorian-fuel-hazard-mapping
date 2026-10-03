@@ -505,7 +505,7 @@ These classes are used for:
 * visualisation;
 * spatial interpretation;
 * field-verification prioritisation.
-
+![Relative Fuel Hazard Map](Relative%20Fuel%20Hazard%20Map.png)
 They do **not** represent official bushfire hazard categories.
 
 ---
