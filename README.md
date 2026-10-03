@@ -2,7 +2,7 @@
 
 **Independent GIS & Remote Sensing Portfolio Project — 2026**
 
-An independent project exploring how remote sensing, GIS, mobile field data collection and future GeoAI could be combined into an iterative workflow for assessing relative fuel-hazard patterns across a Victorian study area.
+An independent project exploring how remote sensing, GIS, mobile field data collection, and future GeoAI can be combined into an iterative workflow for assessing relative fuel-hazard patterns across a Victorian study area.
 
 > **Important:** This is an independent portfolio project and a relative modelling/field-verification prototype. It is not an operational Victorian Government hazard assessment or a field-validated fire-risk product.
 
@@ -10,191 +10,197 @@ An independent project exploring how remote sensing, GIS, mobile field data coll
 
 ## 🎯 Project Objective
 
-The objective is to develop an end-to-end geospatial workflow that connects:
+The project develops an end-to-end workflow connecting:
 
 **Remote Sensing → GIS Analysis → Relative Fuel Hazard → Field Verification → Model Evaluation → Future GeoAI**
 
-The project focuses on developing a practical workflow rather than producing an operational fire-danger assessment.
+The main objective is to demonstrate how multiple geospatial datasets can be integrated into a reproducible GIS workflow and subsequently connected to mobile field data collection.
+
+---
+
+## 🗺️ Workflow Overview
+
+```text
+Source GIS & Remote Sensing Data
+              │
+              ▼
+      AOI clipping / preprocessing
+              │
+              ▼
+      Rasterisation & alignment
+              │
+              ├── Sentinel-1 (SAR / Future GeoAI)
+              ├── Sentinel-2 (NDVI, NDMI, MSI)
+              ├── DEM / Terrain (Future GeoAI)
+              ├── Fire history & TSLB
+              ├── Fuel types (BFC reclassification)
+              ├── FMZ (Management Context)
+              └── PLM25 (Tenure Context)
+              │
+              ▼
+     Vegetation / Dryness / Stress Scores
+              │
+              ▼
+       Fuel Condition Score (Optical Indices)
+              │
+              ▼
+   Time Since Last Burnt (TSLB) Normalisation
+              │
+              ▼
+       Relative Fuel Hazard Proxy
+              │
+              ▼
+     FMZ & Fuel Group Interpretation
+              │
+              ▼
+     Priority Areas for Field Verification
+              │
+              ▼
+             QField (Mobile Data Collection)
+              │
+              ▼
+       Field Observations vs. Model Evaluation
+              │
+              ▼
+      Future GeoAI / Deep Learning Feedback Loop
+```
 
 ---
 
 ## 🛰️ Stage 1 — Relative Fuel Hazard Mapping
 
-The first stage integrates multiple spatial datasets, including:
+Stage 1 was implemented primarily using **QGIS, Python, and Google Earth Engine (GEE)**. The purpose is to create a **relative fuel-hazard proxy**, rather than an operational bushfire hazard assessment.
 
-* Sentinel-1 SAR
-* Sentinel-2 optical imagery
-* Vegetation and moisture indicators
-* DEM-derived terrain variables
-* Fire history
-* Time Since Last Burnt (TSLB)
-* Fuel groups
-* Fire Management Zones (FMZ)
+### 1. Study Area & Grid Setup
+* **AOI Spatial Boundary:** Custom study-area polygon.
+* **Coordinate Reference System (CRS):** `EPSG:7899` — GDA2020 / Vicgrid.
+* **Resolution:** 10 m common raster grid.
 
-Using **Python and QGIS**, these datasets were combined to produce a relative fuel-hazard proxy map.
+### 2. Required Spatial Datasets
 
-### Example output
+| Dataset | Type | Purpose |
+| :--- | :--- | :--- |
+| **Sentinel-1** | Raster | SAR backscatter and structural information (retained for feature stack / GeoAI) |
+| **Sentinel-2** | Raster | Vegetation and moisture indicators (NDVI, NDMI, MSI) |
+| **DEM / Terrain** | Raster | Elevation, Slope, Aspect (retained for feature stack / GeoAI) |
+| **Fire History** | Vector | Historical fire occurrence (`last_burnt`, `TSLB`) |
+| **Fuel Types** | Raster/Vector | BFC fuel-group classification |
+| **FMZ** | Vector/Raster | Fire Management Zone context |
+| **PLM25** | Vector | Public land management context |
+| **AOI** | Vector | Study-area boundary mask |
 
+> *Note: Victorian Government source datasets are not redistributed in this repository where licensing applies. The repository documents the processing workflow for reproducibility.*
+
+### 3. Fire History & TSLB Calculation
+* **Last Burnt:** Identified the most recent recorded fire year intersecting each cell (`2003`, `2007`, `2009`, `2016`, `2019`, `2020`, `2023`, `2025`).
+* **Time Since Last Burnt (TSLB):** Calculated for the 2026 analysis year as:
+  $$\text{TSLB} = 2026 - \text{last\_burnt}$$
+* **Normalisation:** The observed TSLB range (1–23 years) was normalised to a $0\text{--}1$ scale as a relative burn-recovery indicator.
+
+### 4. Fuel Type Reclassification
+The original BFC classes were reclassified into broader environmental fuel groups:
+* **Group 0:** Excluded (non-fuel / water / urban)
+* **Group 1:** Forest
+* **Group 2:** Woodland
+* **Group 3:** Plantation
+* **Group 4:** Shrubland
+* **Group 5:** Grassland
+* **Group 6:** Other vegetation
+
+### 5. Remote Sensing Feature Stack
+A 9-band feature stack was generated in Google Earth Engine and aligned to the master 10 m grid:
+* **Bands 1–3:** NDVI (Vegetation), NDMI (Moisture), MSI (Stress) — *used in Stage 1 fuel condition scoring*.
+* **Bands 4–6:** VV, VH, VV − VH (SAR backscatter & structure) — *retained for future GeoAI*.
+* **Bands 7–9:** Elevation, Slope, Aspect (Terrain) — *retained for future GeoAI*.
+
+### 6. Component Scores & Fuel Condition
+* **Vegetation Score:** Min-max normalised NDVI.
+* **Dryness Score:** $1 - \text{Normalised NDMI}$.
+* **Stress Score:** Min-max normalised MSI.
+* **Fuel Condition Score:** Weighted combination driving the immediate condition indicator:
+  $$\text{FuelConditionScore} = 0.40 \times \text{Vegetation} + 0.35 \times \text{Dryness} + 0.25 \times \text{Stress}$$
+
+### 7. Relative Fuel Hazard Proxy & Classification
+The final continuous proxy integrates fuel condition and burn history:
+$$\text{RelativeFuelHazard} = 0.60 \times \text{FuelConditionNormalised} + 0.40 \times \text{TSLBScore}$$
 ![Relative Fuel Hazard Map](Relative%20Fuel%20Hazard%20Map.png)
 
-The relative hazard classification was divided into:
+The continuous proxy was classified into three relative classes for visualisation and field prioritisation:
+* **Low:** $< 0.33$
+* **Moderate:** $0.33\text{--}0.66$
+* **High:** $\ge 0.66$
 
-* Low
-* Moderate
-* High
-
-Zonal statistics were then used to examine the distribution of higher relative hazard across management zones.
-
----
-
-## 📊 Example Result
-
-Within the study area, approximately:
-
-* **69.6%** of valid mapped pixels within the Bushfire Moderation Zone (BMZ) were classified as high relative hazard.
-* **27.7%** within the Landscape Management Zone (LMZ) were classified as high relative hazard.
-
-These values are **relative modelling outputs**, not field-validated hazard assessments.
+### 8. Management Context Integration (FMZ & PLM25)
+Fire Management Zones (FMZ) and Public Land Management (PLM25) layers were overlaid as spatial context to evaluate hazard patterns across different management zones and tenures (e.g., assessing high-hazard concentrations within specific Bushfire Management Zones via zonal statistics).
 
 ---
 
 ## 📱 Stage 2 — QField Field Verification
 
-The second stage extends the desktop GIS workflow into a mobile field-verification workflow using **QField**.
+The GIS outputs are packaged into a QField mobile project to decouple model predictions from ground-truthing:
+* **GIS-Derived Fields:** Relative hazard score, hazard class, fuel group, TSLB, FMZ, and tenure.
+* **Field Observations:** Observed fuel type, fuel condition, surface fuel continuity, understorey density, recent disturbances, photographs, and field hazard notes.
 
-The field form is designed to separate:
-
-### GIS-derived information
-
-* Relative hazard score
-* Hazard class
-* Fuel group
-* TSLB
-* Last burnt
-* FMZ
-* PLM
-
-### Field observations
-
-* Observed fuel type
-* Observed fuel condition
-* Surface fuel continuity
-* Understorey density
-* Recent disturbance
-* Field hazard assessment
-* Photographs
-* Comments
-
-![QField Form](images/qfield-form.png)
-
-The purpose is to create a structured dataset that can later be used to compare spatial predictions with field observations.
+```text
+GIS Prediction ──> QField Deployment ──> Site Navigation ──> Field Observation & Photos ──> Data Sync
+```
 
 ---
 
-## 🔄 Proposed Feedback Loop
+## 🔄 Stage 3 & 4 — Evaluation & Future GeoAI
 
-The longer-term concept is:
-
-**Remote Sensing**
-
-↓
-
-**GIS / Relative Hazard Model**
-
-↓
-
-**QField Field Verification**
-
-↓
-
-**Field Observations**
-
-↓
-
-**Model Evaluation**
-
-↓
-
-**Future Deep Learning / GeoAI**
-
-↓
-
-**Updated Spatial Model**
-
-↓
-
-**Further Field Verification**
-
-This creates a potential feedback loop between remote sensing, GIS, field data and machine learning.
+* **Model Evaluation:** Comparing predicted fuel groups and hazard classes against field observations to identify spatial error patterns and refine weights.
+* **Future GeoAI:** Transitioning from heuristic rules to supervised machine learning / deep learning by using the field-validated dataset alongside the full multi-sensor feature stack (Sentinel-1, Sentinel-2, DEM, terrain, and spatial context).
 
 ---
 
-## 🛠️ Technologies
+## 📁 Main Project Outputs
 
-**GIS & Remote Sensing**
-
-* QGIS
-* QField
-* Sentinel-1
-* Sentinel-2
-* Google Earth Engine
-* Raster analysis
-* Spatial analysis
-* Zonal statistics
-
-**Programming & Data Science**
-
-* Python
-* GeoPandas
-* Raster processing
-* Machine learning / deep learning concepts
-
-**Data**
-
-* Fire history
-* Time Since Last Burnt
-* Fuel groups
-* Fire Management Zones
-* Terrain / DEM
-* Vegetation and moisture indicators
+```text
+fuel_hazard_features_2026Q1.tif   # 9-band feature stack (NDVI, NDMI, MSI, VV, VH, SAR diff, DEM, Slope, Aspect)
+fuelGroups_aligned.tif           # Reclassified fuel groups (10m grid)
+last_burnt.tif                   # Last recorded fire year
+TSLB_2026.tif                    # Time since last burnt
+TSLB_score.tif                   # Normalised TSLB score
+vegetation_score.tif             # Normalised NDVI score
+dryness_score.tif                # Normalised NDMI dryness score
+stress_score.tif                 # Normalised MSI stress score
+fuel_condition_score.tif         # Composite fuel condition score
+relative_fuelhazard_proxy.tif    # Final relative fuel hazard proxy raster
+FMZ.tif                          # Rasterised Fire Management Zones
+PLM25.shp                        # Public land management boundaries vector
+Fuel_Hazard_Field_Verification.gpkg # QField mobile package
+```
 
 ---
 
-## 🚧 Current Status
+## 🧪 Reproducibility Workflow
 
-### Completed
-
-* [x] Remote-sensing and GIS preprocessing
-* [x] Relative fuel-hazard modelling
-* [x] Low / Moderate / High classification
-* [x] FMZ zonal analysis
-* [x] QField field-verification prototype
-
-### Future work
-
-* [ ] Field data collection
-* [ ] Compare model predictions with field observations
-* [ ] Quantitative model evaluation
-* [ ] Build a field-validated training dataset
-* [ ] Explore deep-learning approaches
-* [ ] Iteratively refine the spatial model
+1. Define study area AOI (`EPSG:7899`).
+2. Download and preprocess source datasets.
+3. Clip, reproject, and rasterise vector layers.
+4. Align all rasters to the master 10 m grid (Nearest Neighbour for categorical data, Bilinear for continuous data).
+5. Generate Sentinel-1 / Sentinel-2 feature stack via Google Earth Engine.
+6. Compute component scores (Vegetation, Dryness, Stress) and composite Fuel Condition.
+7. Calculate Last Burnt and Normalised TSLB.
+8. Derive Relative Fuel-Hazard Proxy and apply classification thresholds.
+9. Perform zonal statistics across FMZ layers.
+10. Export packages for QField deployment.
 
 ---
 
 ## ⚠️ Limitations
 
-This project is an independent portfolio project.
-
-The relative hazard outputs are intended to demonstrate a GIS and remote-sensing workflow and should not be interpreted as an official operational bushfire hazard or prescribed-burning decision product.
-
-Field validation has not yet been completed.
+This is an **independent portfolio project**. The relative hazard model:
+* Has not yet been field-validated.
+* Uses heuristic modelling assumptions and manually configured weights.
+* Does not represent an official Victorian Government hazard assessment and should not be used for operational fire management decisions.
+* Uses TSLB based strictly on available recorded fire history records, which may not reflect actual fine-fuel accumulation on the ground.
 
 ---
 
-## 👩‍💻 Project Focus
+## 👩‍💻 Technology Stack
 
-This project demonstrates my interest in connecting:
-
-**GIS + Remote Sensing + Python + Mobile GIS + GeoAI**
-
-to practical environmental and geospatial problems.
+* **GIS & Remote Sensing:** QGIS, QField, Google Earth Engine, Sentinel-1 (SAR), Sentinel-2 (Optical).
+* **Python Libraries:** Rasterio, GeoPandas, NumPy, PyQGIS.
+* **Data Processing:** Rasterisation, spatial overlay, zonal statistics, mobile spatial synchronization.
