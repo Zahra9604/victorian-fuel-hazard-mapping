@@ -693,7 +693,15 @@ Synchronise data
 ```
 
 The resulting dataset provides a structured way to compare model predictions with future field observations.
+## 📱 QField Mobile Field-Verification Project
 
+The QField project connects the GIS-derived hazard information with a mobile field-verification workflow.
+
+### QField Project QR Code
+
+Scan the QR code below to access the QField project on a mobile device.
+
+![QR code for QField project on mobile phone](Qfield_screen_QR/Screenshot_20261003_135854.jpg)
 ---
 
 # 🔄 Stage 3 — Future Model Evaluation
