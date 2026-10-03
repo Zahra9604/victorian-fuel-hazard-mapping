@@ -1,4 +1,4 @@
-Markdown# 🌲 Victorian Fuel Hazard Mapping & Field Verification
+🌲 Victorian Fuel Hazard Mapping & Field Verification
 
 **Independent GIS & Remote Sensing Portfolio Project — 2026**
 
