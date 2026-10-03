@@ -861,6 +861,38 @@ The processing sequence is:
 ```
 
 ---
+## 📚 Data Sources
+
+The project uses a combination of publicly available Victorian Government spatial datasets and satellite-derived data.
+
+### Victorian Government Spatial Data
+
+The following datasets were downloaded from the Victorian Government's open-data catalogue:
+
+* **Fire Management Zones (FMZ)** — Department of Energy, Environment and Climate Action (DEECA)
+* **Fuel Type / Vegetation data** — Victorian Government spatial datasets
+* **Fire History** — Victorian Government spatial datasets
+* **Planned Management / Public Land Management information** — Victorian Government spatial datasets
+* **Digital Elevation Model (DEM)** — Victorian Government spatial data
+* **Other supporting spatial layers** used for terrain and environmental analysis
+
+Source: [DataVic — Victorian Government Open Data](https://discover.data.vic.gov.au/)
+
+The **Fire Management Zones** dataset represents areas used to provide a framework for fuel-management programs across Victorian public land.
+
+### Satellite and Earth Observation Data
+
+* **Sentinel-1** — Copernicus Sentinel-1 mission
+* **Sentinel-2** — Copernicus Sentinel-2 mission
+* **DEA Land Cover** — Digital Earth Australia
+
+Satellite data were accessed and processed using **Google Earth Engine** and related geospatial processing workflows.
+
+### Data Licensing and Redistribution
+
+The original Victorian Government datasets remain subject to their respective licensing and distribution conditions. Where redistribution is restricted or unnecessary, the original source data are not included in this repository.
+
+Only derived outputs, processing scripts, project documentation and selected visualisations are included where appropriate.
 
 # ⚠️ Limitations
 
