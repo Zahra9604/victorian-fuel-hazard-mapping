@@ -35,16 +35,26 @@ import pathlib
 import ee
 import geopandas as gpd
 
-
+import os 
 # ------------------------------------------------------------
 # 2. SETTINGS
 # ------------------------------------------------------------
+ROOT = os.path.dirname(
+    os.getcwd()
+)
+
+
+BASE_DIR = os.path.join(
+    ROOT,
+    "data"
+)
+
 
 # Your final AOI
-INPUT_SHP = r"C:\DEECA\data\AOI\AOI.shp"
+INPUT_SHP =os.path.join(BASE_DIR,'AOI','AOI.shp')
 
 # Earth Engine export settings
-DRIVE_FOLDER = "DEECA_Fuel_Hazard"
+
 
 EXPORT_NAME = "fuel_hazard_features_2026Q1"
 
@@ -530,7 +540,7 @@ print(f"Bands          : {len(band_names)}")
 print("Data type      : Float32")
 print("Format         : GeoTIFF")
 print("Destination    : Google Drive")
-print(f"Drive folder   : {DRIVE_FOLDER}")
+print(f"Drive folder   : {BASE_DIR}")
 print(f"File name      : {EXPORT_NAME}.tif")
 
 print()
@@ -566,7 +576,7 @@ task = ee.batch.Export.image.toDrive(
 
     description=EXPORT_NAME,
 
-    folder=DRIVE_FOLDER,
+    folder=BASE_DIR,
 
     fileNamePrefix=EXPORT_NAME,
 
