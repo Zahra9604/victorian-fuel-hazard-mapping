@@ -729,11 +729,11 @@ FIELD OBSERVATION
 │   ├── Field Notes
 │   └── Validation Status
 │
-├── GPS / Location Metadata
-│   ├── Latitude
-│   ├── Longitude
+├── GPS Metadata
+│   ├── GPS Accuracy
 │   ├── Altitude
-│   └── GPS Accuracy
+│   ├── Latitude
+│   └── Longitude
 
 ```
 
