@@ -784,7 +784,6 @@ Scan the QR code below to explore the QField project workflow on a mobile device
 
 ![QR code for QField project on mobile phone](Qfield_screen_QR/Screenshot_20261003_135854.jpg)
 
-> The QR code provides access according to the destination encoded in the QR code. A publicly accessible QField/QFieldCloud project is required for direct project access.
 
 ---
 
