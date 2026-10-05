@@ -724,10 +724,17 @@ FIELD OBSERVATION
 │   ├── Vegetation Density
 │   └── Surface Fuel Continuity
 │
-└── Evidence
-    ├── Photo
-    ├── Field Notes
-    └── Validation Status
+├── Evidence
+│   ├── Photo
+│   ├── Field Notes
+│   └── Validation Status
+│
+├── GPS / Location Metadata
+│   ├── Latitude
+│   ├── Longitude
+│   ├── Altitude
+│   └── GPS Accuracy
+
 ```
 
 ### 🗺️ GIS Prediction
