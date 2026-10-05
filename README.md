@@ -18,7 +18,7 @@ The main objective is to demonstrate how multiple geospatial datasets can be int
 
 ---
 
-## 🗺️ Workflow Overview
+# 🗺️ Workflow Overview
 
 ```text
 Source GIS & Remote Sensing Data
@@ -71,27 +71,28 @@ Source GIS & Remote Sensing Data
 ```
 
 ---
-## 📚 Data Sources & Data Acquisition
 
-### 🛰️ Google Earth Engine
+# 📚 Data Sources & Data Acquisition
 
-Satellite and environmental data were accessed and downloaded using **Google Earth Engine (GEE)** through Python.
+## 🛰️ Google Earth Engine
+
+Satellite and environmental datasets were accessed and downloaded using **Google Earth Engine (GEE)** through Python.
 
 The repository includes the Python scripts used to retrieve and prepare the GEE datasets.
 
-Data used from GEE include:
+Data accessed through GEE include:
 
 * **Sentinel-1** — VV and VH backscatter
-* **Sentinel-2** — multispectral bands used to calculate NDVI, NDMI and MSI
+* **Sentinel-2** — multispectral imagery used to calculate NDVI, NDMI and MSI
 * **Digital Elevation Model (DEM)**
 * **Terrain-derived variables** such as elevation, slope and aspect
 * **DEA Land Cover** and other supporting environmental datasets where applicable
 
-The downloaded datasets were then processed and aligned to a common **10 m GDA2020 / Vicgrid (EPSG:7899)** grid for further GIS analysis.
+The downloaded datasets were subsequently processed and aligned to a common **10 m GDA2020 / Vicgrid (EPSG:7899)** analysis grid.
 
-### 🗺️ Victorian Government Spatial Data
+## 🗺️ Victorian Government Spatial Data
 
-Additional spatial datasets were downloaded from the **Victorian Government Open Data** platform, including:
+Additional spatial datasets were obtained from the **Victorian Government Open Data** platform, including:
 
 * Fire Management Zones (FMZ)
 * Fuel type / vegetation information
@@ -99,11 +100,15 @@ Additional spatial datasets were downloaded from the **Victorian Government Open
 * Public land / management information
 * Other supporting Victorian spatial layers
 
-Source: [Victorian Government Open Data](https://discover.data.vic.gov.au/)
+Source:
 
-These datasets were clipped to the project AOI and processed using QGIS/Python before being incorporated into the analysis.
+[Victorian Government Open Data](https://discover.data.vic.gov.au/)
 
-### 🔄 Data Acquisition Workflow
+These datasets were clipped to the project AOI and processed using QGIS and Python before being incorporated into the analysis.
+
+> Original government source datasets are not redistributed in this repository where licensing or distribution conditions apply.
+
+## 🔄 Data Acquisition Workflow
 
 ```text
 Google Earth Engine
@@ -121,7 +126,9 @@ Reprojection and raster alignment
 Relative Fuel Hazard Proxy
 ```
 
-The repository contains the download and processing code to document the workflow and improve reproducibility. Original source datasets are not redistributed where their licensing or distribution conditions do not permit this.
+The repository contains the download and processing code to document the workflow and improve reproducibility.
+
+---
 
 # 🛰️ Stage 1 — Relative Fuel Hazard Mapping
 
@@ -164,12 +171,12 @@ The final analysis grid uses:
 | Fire History | Vector                         | Historical fire occurrence                 |
 | Fuel Types   | Raster / vector-derived raster | Fuel-group classification                  |
 | FMZ          | Vector / raster                | Fire Management Zone context               |
-| PLM25        | Vector                         | Public land management context             |
+| PLM25        | Vector                         | Public land / management context           |
 | AOI          | Vector                         | Study-area boundary                        |
 
 The Victorian Government source datasets are **not redistributed in this repository** where licensing or distribution conditions apply.
 
-Instead, the repository documents the dataset names and processing workflow so that the analysis can be reproduced using the appropriate source datasets.
+Instead, the repository documents the dataset sources and processing workflow so that the analysis can be reproduced using the appropriate source datasets.
 
 ---
 
@@ -236,7 +243,7 @@ The resulting raster contains values such as:
 
 ## 5. Time Since Last Burnt (TSLB)
 
-TSLB was calculated from the most recent fire year.
+TSLB was calculated from the most recent recorded fire year.
 
 For the 2026 analysis:
 
@@ -273,7 +280,7 @@ Interpretation:
 1 → relatively long time since recorded burning
 ```
 
-> **Important:** TSLB is a relative burn-history indicator. It does not directly measure fuel accumulation, fuel age, or fuel quantity.
+> **Important:** TSLB is a relative burn-history indicator. It does not directly measure fuel accumulation, fuel age, fuel quantity, fuel structure, or fuel continuity.
 
 ---
 
@@ -297,7 +304,7 @@ The fuel-group raster was then:
 
 1. clipped to the AOI;
 2. reclassified;
-3. assigned a NoData value outside the valid study area;
+3. assigned NoData outside the valid study area;
 4. aligned to the common 10 m analysis grid.
 
 ---
@@ -481,7 +488,7 @@ Each raster was transformed to the same:
 * affine transform
 * pixel alignment
 
-Categorical datasets such as fuel groups and last-burnt classes were resampled using:
+Categorical datasets such as fuel groups and fire-history classes were resampled using:
 
 ```text
 Nearest Neighbour
@@ -556,8 +563,10 @@ These classes are used for:
 * visualisation;
 * spatial interpretation;
 * field-verification prioritisation.
+
 ![Relative Fuel Hazard Map](Relative%20Fuel%20Hazard%20Map.png)
-They do **not** represent official bushfire hazard categories.
+
+> These classes do **not** represent official bushfire hazard categories.
 
 ---
 
@@ -609,15 +618,7 @@ Grassland
 Other vegetation
 ```
 
-This helps distinguish a high relative score occurring in:
-
-* forest;
-* woodland;
-* plantation;
-* shrubland;
-* grassland.
-
-Rather than treating all pixels as the same fuel environment.
+This helps distinguish a high relative score occurring in different fuel environments rather than treating all pixels as the same fuel environment.
 
 ---
 
@@ -694,36 +695,93 @@ This creates the foundation for evaluating and improving the model.
 
 # 📱 Stage 2 — QField Field Verification
 
-The Stage 1 output is connected to a **QField** project.
+Stage 2 connects the Stage 1 GIS outputs with a **QField mobile field-verification workflow**.
 
-The QField form separates **GIS-derived information** from **field observations**.
+The QField form is structured into four main sections:
 
-### GIS-derived Information
+```text
+FIELD OBSERVATION
+│
+├── Site Information
+│   ├── Site ID
+│   ├── Survey Date
+│   └── Observer
+│
+├── GIS Prediction
+│   ├── Relative Hazard Score
+│   ├── Hazard Class
+│   ├── Fuel Group
+│   ├── FMZ
+│   ├── PLM
+│   ├── TSLB
+│   └── Last Burnt
+│
+├── Field Assessment
+│   ├── Observed Fuel Group
+│   ├── Observed Fuel Condition
+│   ├── Observed Hazard
+│   ├── Burn Evidence
+│   ├── Vegetation Density
+│   └── Surface Fuel Continuity
+│
+└── Evidence
+    ├── Photo
+    ├── Field Notes
+    └── Validation Status
+```
 
-These values are populated from the GIS analysis:
+### 🗺️ GIS Prediction
 
-* Relative hazard score
-* Hazard class
-* Fuel group
-* TSLB
-* Last burnt
+The following information comes from the GIS analysis:
+
+* Relative Hazard Score
+* Hazard Class
+* Fuel Group
 * FMZ
-* PLM25 information
+* PLM
+* TSLB
+* Last Burnt
 
-### Field Observations
+These values provide the **model prediction and spatial context** at each verification location.
 
-The field worker records:
+### 🔎 Field Assessment
 
-* Observed fuel type
-* Observed fuel condition
-* Surface fuel continuity
-* Understorey density
-* Recent disturbance
-* Field hazard assessment
-* Photographs
-* Comments
+The field observer can record:
 
-### QField Workflow
+* Observed Fuel Group
+* Observed Fuel Condition
+* Observed Hazard
+* Burn Evidence
+* Vegetation Density
+* Surface Fuel Continuity
+
+### 📷 Evidence
+
+Each observation can include:
+
+* Site photographs
+* Field notes
+* Validation status
+
+This creates a structured record linking the **predicted spatial conditions** with the **observed site conditions**.
+
+---
+
+## 📱 QField Mobile Field-Verification Project
+
+The QField project demonstrates how GIS-derived predictions can be taken into a mobile field-data collection workflow.
+
+### QField Project QR Code
+
+Scan the QR code below to explore the QField project workflow on a mobile device.
+
+![QR code for QField project on mobile phone](Qfield_screen_QR/Screenshot_20261003_135854.jpg)
+
+> The QR code provides access according to the destination encoded in the QR code. A publicly accessible QField/QFieldCloud project is required for direct project access.
+
+---
+
+## 🔄 QField Workflow
 
 ```text
 GIS prediction
@@ -744,15 +802,7 @@ Synchronise data
 ```
 
 The resulting dataset provides a structured way to compare model predictions with future field observations.
-## 📱 QField Mobile Field-Verification Project
 
-The QField project connects the GIS-derived hazard information with a mobile field-verification workflow.
-
-### QField Project QR Code
-
-Scan the QR code below to access the QField project on a mobile device.
-
-![QR code for QField project on mobile phone](Qfield_screen_QR/Screenshot_20261003_135854.jpg)
 ---
 
 # 🔄 Stage 3 — Future Model Evaluation
@@ -821,7 +871,7 @@ Initial Relative Model
       ↓
 QField Field Verification
       ↓
-Field-validated Dataset
+Field-verified Dataset
       ↓
 Machine Learning / Deep Learning
       ↓
@@ -884,7 +934,7 @@ Fuel_Hazard_Field_Verification.gpkg
 
 # 🧪 Reproducibility
 
-The repository documents the processing workflow rather than uploading all source government datasets.
+The repository documents the processing workflow rather than uploading all original source datasets.
 
 The processing sequence is:
 
@@ -953,7 +1003,7 @@ The field-verification stage is designed to provide future observations that can
 * **GeoPandas**
 * **NumPy**
 * **PyQGIS**
-* Machine learning / deep-learning concepts
+* Machine-learning / deep-learning concepts
 
 ### Data Processing
 
@@ -997,7 +1047,7 @@ The key concept is not simply producing a map, but creating a workflow where:
 | Zonal analysis                        | ✅ Complete      |
 | QField workflow                       | ✅ Complete      |
 | Field observations                    | 🔄 Future stage |
-| Model validation                      | 🔄 Future stage |
+| Model evaluation                      | 🔄 Future stage |
 | GeoAI / deep-learning model           | 🔄 Future stage |
 
 ---
