@@ -11,7 +11,7 @@ An independent portfolio project exploring how **remote sensing, GIS, mobile fie
 
 Fuel conditions vary across landscapes and are influenced by vegetation characteristics, moisture conditions, fire history, and environmental factors. Time Since Last Burnt (TSLB) provides useful fire-history context, but it does not directly measure current fuel condition or establish the level of fuel hazard at a location.
 
-Research by McColl-Gausden et al. (2020), *Climatic and edaphic gradients predict variation in wildland fuel hazard in south-eastern Australia*, provides relevant scientific context for investigating how environmental gradients relate to spatial variation in fuel hazard.
+Research by [McColl-Gausden et al. (2020), *Climatic and edaphic gradients predict variation in wildland fuel hazard in south-eastern Australia*](https://nsojournals.onlinelibrary.wiley.com/doi/pdf/10.1111/ecog.04714), provides relevant scientific context for investigating how environmental gradients relate to spatial variation in fuel hazard.
 
 ### The Problem Statement
 
