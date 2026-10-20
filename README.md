@@ -7,6 +7,27 @@ An independent portfolio project exploring how **remote sensing, GIS, mobile fie
 > **Important:** This is an independent portfolio project and a relative modelling/field-verification prototype. It is **not** an operational Victorian Government hazard assessment or a field-validated fire-risk product.
 
 ---
+## 📌 Project Motivation & Scientific Grounding
+
+Fuel conditions vary across landscapes and are influenced by vegetation characteristics, moisture conditions, fire history, and environmental factors. Time Since Last Burnt (TSLB) provides useful fire-history context, but it does not directly measure current fuel condition or establish the level of fuel hazard at a location.
+
+Research by McColl-Gausden et al. (2020), *Climatic and edaphic gradients predict variation in wildland fuel hazard in south-eastern Australia*, provides relevant scientific context for investigating how environmental gradients relate to spatial variation in fuel hazard.
+
+### The Problem Statement
+
+**Can satellite-derived vegetation and moisture indicators, combined with fire history and environmental data, help identify spatial variation in fuel condition across Victorian public lands and support the prioritisation of areas for further field assessment?**
+
+This project explores the potential of multi-sensor Earth observation and geospatial analysis to map relative fuel-condition patterns. It also establishes a foundation for investigating whether deep learning, supported by suitable field observations, can improve spatial predictions.
+
+### Scope and Relationship to Established Fuel-Hazard Assessment
+
+This project does not replace the established field-based methods described in the [FFMVic Overall Fuel Hazard Assessment Guide](https://www.ffm.vic.gov.au/__data/assets/pdf_file/0014/21056/Report-47-Overall-Fuel-Hazard-Guide.pdf). Its current Stage 1 output is a **remote-sensing-based fuel-condition proxy**, derived from satellite vegetation and moisture indicators, including NDVI, NDMI and MSI. Fire history and other spatial layers provide additional landscape context.
+
+Stage 2 uses a QField mobile GIS workflow to support the collection of structured field observations, including vegetation characteristics and surface-fuel continuity. These observations are intended to support future comparison between mapped proxy values and field-assessed fuel conditions.
+
+**The longer-term objective** is to evaluate the proxy against suitable field reference data and investigate whether remote sensing and machine learning can provide useful supplementary information for fuel assessment and management planning. Any application to planned burning would require appropriate field assessment and consideration of wider ecological, operational and safety requirements.
+
+**Project status:** This is an independent research and portfolio prototype. Field validation has not yet been completed, and the current proxy should not be interpreted as a formal fuel-hazard assessment or an operational recommendation.
 
 ## 🎯 Project Objective
 
