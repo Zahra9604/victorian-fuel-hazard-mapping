@@ -1,41 +1,101 @@
+
 # 🌲 Victorian Fuel Hazard Mapping & Field Verification
 
 **Independent GIS & Remote Sensing Portfolio Project — 2026**
 
-An independent portfolio project exploring how **remote sensing, GIS, mobile field data collection, and future GeoAI** can be combined into an iterative workflow for assessing relative fuel-hazard patterns across a Victorian study area.
+An independent portfolio project exploring how **remote sensing, GIS, mobile field data collection, and future GeoAI** can be integrated into an iterative workflow to map relative fuel-condition patterns and support field-based fuel-hazard assessment across a Victorian study area.
 
-> **Important:** This is an independent portfolio project and a relative modelling/field-verification prototype. It is **not** an operational Victorian Government hazard assessment or a field-validated fire-risk product.
+> **Important:** This is an independent research and portfolio prototype. Its current output is a remote-sensing-based fuel-condition proxy, not an operational Victorian Government fuel-hazard assessment or a field-validated fire-risk product.
 
 ---
+
 ## 📌 Project Motivation & Scientific Grounding
 
-Fuel conditions vary across landscapes and are influenced by vegetation characteristics, moisture conditions, fire history, and environmental factors. Time Since Last Burnt (TSLB) provides useful fire-history context, but it does not directly measure current fuel condition or establish the level of fuel hazard at a location.
+Fuel conditions vary across landscapes according to vegetation characteristics, fuel structure, moisture conditions, fire history, and environmental factors. Time Since Last Burnt (TSLB) provides useful fire-history context, but it does not directly measure current fuel condition or establish the level of fuel hazard at a location.
 
-Research by [McColl-Gausden et al. (2020), *Climatic and edaphic gradients predict variation in wildland fuel hazard in south-eastern Australia*](https://nsojournals.onlinelibrary.wiley.com/doi/pdf/10.1111/ecog.04714), provides relevant scientific context for investigating how environmental gradients relate to spatial variation in fuel hazard.
+McColl-Gausden et al. (2020), in *[Climatic and edaphic gradients predict variation in wildland fuel hazard in south-eastern Australia](https://doi.org/10.1111/ecog.04714)*, provide relevant scientific context for investigating how environmental gradients relate to spatial variation in fuel hazard.
 
-### The Problem Statement
+The [FFMVic Overall Fuel Hazard Assessment Guide](https://www.ffm.vic.gov.au/__data/assets/pdf_file/0014/21056/Report-47-Overall-Fuel-Hazard-Guide.pdf) describes an established field-based approach that assesses bark, elevated and surface fine fuel hazards, with near-surface fuel characteristics also informing relevant assessments.
+
+Many important fuel characteristics, including bark structure, litter-bed height, fine-fuel arrangement, and vertical continuity, cannot be measured directly and reliably from satellite imagery alone, particularly beneath dense vegetation canopies.
+
+This creates an opportunity to investigate how remote sensing can **complement field assessment by providing spatially extensive, repeatable information about vegetation and moisture-related conditions**, rather than attempting to replace established field-based methods.
+
+### 🎯 Research Question
 
 **Can satellite-derived vegetation and moisture indicators, combined with fire history and environmental data, help identify spatial variation in fuel condition across Victorian public lands and support the prioritisation of areas for further field assessment?**
 
-This project explores the potential of multi-sensor Earth observation and geospatial analysis to map relative fuel-condition patterns. It also establishes a foundation for investigating whether deep learning, supported by suitable field observations, can improve spatial predictions.
 
-### Scope and Relationship to Established Fuel-Hazard Assessment
+---
 
-This project does not replace the established field-based methods described in the [FFMVic Overall Fuel Hazard Assessment Guide](https://www.ffm.vic.gov.au/__data/assets/pdf_file/0014/21056/Report-47-Overall-Fuel-Hazard-Guide.pdf). Its current Stage 1 output is a **remote-sensing-based fuel-condition proxy**, derived from satellite vegetation and moisture indicators, including NDVI, NDMI and MSI. Fire history and other spatial layers provide additional landscape context.
+## 🔬 Project Workflow and Scope
 
-Stage 2 uses a QField mobile GIS workflow to support the collection of structured field observations, including vegetation characteristics and surface-fuel continuity. These observations are intended to support future comparison between mapped proxy values and field-assessed fuel conditions.
+### Stage 1 — Remote-Sensing Fuel-Condition Proxy
 
-**The longer-term objective** is to evaluate the proxy against suitable field reference data and investigate whether remote sensing and machine learning can provide useful supplementary information for fuel assessment and management planning. Any application to planned burning would require appropriate field assessment and consideration of wider ecological, operational and safety requirements.
+The current workflow combines satellite-derived indicators:
 
-**Project status:** This is an independent research and portfolio prototype. Field validation has not yet been completed, and the current proxy should not be interpreted as a formal fuel-hazard assessment or an operational recommendation.
+- **NDVI:** vegetation greenness.
+- **NDMI:** vegetation moisture-related conditions.
+- **MSI:** moisture-related spectral response.
+
+These indicators contribute to an exploratory fuel-condition score. **Fire history**, including TSLB, and other spatial layers provide additional landscape context.
+
+The current score represents relative patterns derived from selected remote-sensing indicators. It does not directly measure bark hazard, litter-bed characteristics, vertical fuel continuity, or all the variables used in formal field assessment. It should not be interpreted as a validated prediction of Overall Fuel Hazard.
+
+### Stage 2 — QField Data Collection and Field Verification
+
+A QField mobile GIS workflow is being developed to support structured field observations, including vegetation characteristics and surface-fuel continuity.
+
+The survey design will be reviewed against the FFMVic assessment guide to distinguish supplementary observations from the measurements and categories required for a formal assessment.
+
+Once suitable field observations are available, they can be used to investigate the relationship between remotely sensed indicators and field-assessed fuel conditions.
+
+### Stage 3 — Model Evaluation and Future GeoAI
+
+Following field-data collection, the project aims to investigate whether statistical, machine-learning, or deep-learning approaches can improve the mapping of field-assessed fuel hazard.
+
+Evaluation will require suitable reference data, consistent assessment methods, and independent validation. Model performance will need to be examined across relevant vegetation types and environmental conditions before broader applications can be considered.
+
+---
+
+## 🌿 Potential Benefits and Applications
+
+The project investigates whether an integrated geospatial workflow could offer the following benefits:
+
+- **Broader spatial coverage:** Explore fuel-condition patterns across larger areas, including locations without recent field observations.
+
+- **Prioritised field assessment:** Help identify locations that may warrant further investigation, subject to validation and professional review.
+
+- **Repeatable monitoring:** Compare satellite observations across dates to investigate changes in vegetation and moisture-related indicators.
+
+- **Multi-source spatial analysis:** Combine optical and radar imagery with fire history, terrain, vegetation groups, and land-management context.
+
+- **Field-informed evaluation:** Connect mapped indicators with structured observations collected through mobile GIS.
+
+- **A foundation for GeoAI:** Test whether machine-learning approaches improve predictions once suitable field reference data become available.
+
+These are potential benefits to be evaluated, not demonstrated operational outcomes.
+
+### 🌏 Intended Application
+
+The longer-term goal is to develop a scientifically evaluated supplementary mapping approach that could help land managers identify areas for further field assessment and provide additional spatial context for fuel-management planning.
+
+If validated and used alongside established field assessments, ecological objectives, weather conditions, operational constraints, and safety requirements, this information could potentially contribute to prioritising field inspections and informing planned-burning assessments. The map is not intended to independently determine where burning should occur.
+
+---
 
 ## 🎯 Project Objective
 
-The project develops an end-to-end workflow connecting:
+The project develops a reproducible workflow connecting:
 
-**Remote Sensing → GIS Analysis → Relative Fuel Hazard → Field Verification → Model Evaluation → Future GeoAI**
+**Remote Sensing → GIS Analysis → Relative Fuel-Condition Proxy → Field Data Collection → Validation → Future GeoAI**
 
-The main objective is to demonstrate how multiple geospatial datasets can be integrated into a reproducible GIS workflow and subsequently connected to mobile field data collection.
+The immediate objective is to demonstrate the integration of multi-source geospatial data, transparent spatial analysis, and mobile field-data collection.
+
+The longer-term objective is to evaluate whether remotely sensed indicators can provide useful supplementary information about field-assessed fuel hazard.
+
+**Project status:** This is an independent research and portfolio prototype. Field validation has not yet been completed, and the current proxy has not been demonstrated to predict formal fuel-hazard categories. It is not an operational hazard assessment or a standalone basis for fuel-management or planned-burning decisions.
+
 
 ---
 
